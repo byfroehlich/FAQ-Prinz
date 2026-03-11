@@ -3,6 +3,19 @@
 // Hier können alle Inhalte bearbeitet werden.
 // Änderungen werden nach dem Push automatisch live.
 // ============================================================
+//
+// PDF-DOWNLOADS HINZUFÜGEN:
+// PDFs in den Ordner /public/docs/ legen, dann beim Item eintragen:
+//
+//   { key: "...", label: "...", content: "...",
+//     downloads: [
+//       { label: "Formular Kfz",   file: "/docs/formular-kfz.pdf" },
+//       { label: "SEPA-Mandat",    file: "/docs/sepa-mandat.pdf" },
+//     ]
+//   }
+//
+// Mehrere PDFs pro Item sind möglich.
+// ============================================================
 
 export const teamInitials = {
   r_benni: "BP", r_mathias: "MF", r_roland: "RZ", r_hannes: "JE", r_marcel: "MP",
