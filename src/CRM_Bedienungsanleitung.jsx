@@ -157,7 +157,7 @@ export default function CRMAnleitung() {
                   flex: "0 0 auto", padding: "12px 16px", border: "none", cursor: "pointer",
                   background: isActive ? `${c.color}10` : "transparent",
                   borderBottom: isActive ? `3px solid ${c.color}` : "3px solid transparent",
-                  color: isActive ? "#f1f5f9" : "#64748b",
+                  color: isActive ? "#1e293b" : "#64748b",
                   fontSize: 12, fontWeight: 700, whiteSpace: "nowrap",
                   display: "flex", alignItems: "center", gap: 6, transition: "all 0.15s ease",
                 }}>
@@ -186,7 +186,7 @@ export default function CRMAnleitung() {
                   padding: "10px 20px", border: "none", cursor: "pointer",
                   background: isActive ? `${cat.color}08` : "transparent",
                   borderLeft: isActive ? `3px solid ${cat.color}` : "3px solid transparent",
-                  color: isActive ? "#f1f5f9" : "#94a3b8",
+                  color: isActive ? "#1e293b" : "#94a3b8",
                   fontSize: 13, fontWeight: isActive ? 600 : 400, textAlign: "left",
                   transition: "all 0.15s ease",
                 }}>
