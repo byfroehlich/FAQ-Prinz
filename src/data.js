@@ -3,6 +3,19 @@
 // Hier können alle Inhalte bearbeitet werden.
 // Änderungen werden nach dem Push automatisch live.
 // ============================================================
+//
+// PDF-DOWNLOADS HINZUFÜGEN:
+// PDFs in den Ordner /public/docs/ legen, dann beim Item eintragen:
+//
+//   { key: "...", label: "...", content: "...",
+//     downloads: [
+//       { label: "Formular Kfz",   file: "/docs/formular-kfz.pdf" },
+//       { label: "SEPA-Mandat",    file: "/docs/sepa-mandat.pdf" },
+//     ]
+//   }
+//
+// Mehrere PDFs pro Item sind möglich.
+// ============================================================
 
 export const teamInitials = {
   r_benni: "BP", r_mathias: "MF", r_roland: "RZ", r_hannes: "JE", r_marcel: "MP",
@@ -185,7 +198,8 @@ export const categories = [
         { key: "rk_step6", label: "Schritt 6 – Fahrzeugdaten", content: "→ Fahrzeugart wählen (Dropdown)\n→ Fahrgestell-Nr. (FIN) vom Fahrzeugschein des Kunden\n→ Hersteller eingeben/auswählen\n→ Ausgabe Versicherungskennzeichen: \"Vertriebspartner\" wählen\n→ Kennzeichen eintragen (Format: 111 AAA)" },
         { key: "rk_step7", label: "Schritt 7 – Prüfen & Senden", content: "→ \"Prüfen und senden\" klicken\n→ NUR die erste Seite auf Vordruck ausdrucken\n→ ACHTUNG: Vorher prüfen wie rum der Vordruck in den Drucker kommt!" },
         { key: "rk_step8", label: "Schritt 8 – Dokument unterschreiben", content: "→ Ausgedrucktes Dokument unterschreiben lassen:\n• Unterschrift Versicherungsnehmer (Kunde)\n• Unterschrift Büro/Agentur\n→ Beide Unterschriften erforderlich!" },
-        { key: "rk_step9", label: "Schritt 9 – Abholung & Zahlung", content: "→ Kunde erhält bei Abholung das Zahlungsdokument\n→ Beitrag muss überwiesen werden (KEINE Barzahlung)\n→ Kunde bringt Nachweis der Überweisung an uns" },
+        { key: "rk_step9", label: "Schritt 9 – Abholung & Zahlung", content: "→ Kunde erhält bei Abholung das Zahlungsdokument\n→ Beitrag muss überwiesen werden (KEINE Barzahlung)\n→ Kunde bringt Nachweis der Überweisung an uns",
+          downloads: [{ label: "Roller Überweisung", file: "/docs/Roller Überweisung.pdf" }] },
         { key: "rk_step10", label: "Schritt 10 – Eintrag in Tabelle", content: "→ Vorgang in die Tabelle eintragen (Lisa verwaltet)\n→ Dient zur Nachverfolgung der Zahlungsbestätigung\n→ Lisa fasst nach falls Zahlungsbestätigung ausbleibt" },
       ]},
       { id: "vt_evb", icon: "🚗", title: "7. EVB (Elektronische Versicherungsbestätigung)", intro: "KFZ-spezifisch: EVB erstellen, übermitteln, Sonderfälle.", items: [

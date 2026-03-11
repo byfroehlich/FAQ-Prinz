@@ -295,6 +295,22 @@ export default function CRMAnleitung() {
                                   >→ Zum Tab: {target.label}</button>
                                 ) : null;
                               })()}
+                              {item.downloads?.length > 0 && (
+                                <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 6 }}>
+                                  {item.downloads.map((dl, i) => (
+                                    <a key={i} href={dl.file} download target="_blank" rel="noopener noreferrer"
+                                      style={{
+                                        display: "inline-flex", alignItems: "center", gap: 6,
+                                        padding: "7px 12px", background: "#f1f5f9", border: "1px solid #d1d5db",
+                                        borderRadius: 6, color: "#334155", fontSize: 12, fontWeight: 500,
+                                        textDecoration: "none", transition: "all 0.15s ease",
+                                      }}
+                                      onMouseEnter={(e) => { e.currentTarget.style.background = "#e2e8f0"; }}
+                                      onMouseLeave={(e) => { e.currentTarget.style.background = "#f1f5f9"; }}
+                                    >📄 {dl.label}</a>
+                                  ))}
+                                </div>
+                              )}
                             </div>
                           ) : (
                             <div style={{
