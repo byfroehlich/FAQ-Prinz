@@ -4,6 +4,18 @@ const TABS = [
   { id: "ordentlich", label: "Ordentliche Kündigung" },
   { id: "beitragserhöhung", label: "Sonderkündigung Beitragserhöhung" },
   { id: "schadensfall", label: "Sonderkündigung Schadensfall" },
+  { id: "risikowegfall", label: "Kündigung Risikowegfall" },
+];
+
+const RISIKOWEGFALL_GRUENDE = [
+  { value: "", label: "– Grund wählen –" },
+  { value: "fahrzeug_verkauf", label: "Fahrzeug verkauft / abgemeldet" },
+  { value: "fahrzeug_totalschaden", label: "Fahrzeug Totalschaden" },
+  { value: "gebaeude_abriss", label: "Gebäude abgerissen / nicht mehr vorhanden" },
+  { value: "tod", label: "Tod des Versicherungsnehmers" },
+  { value: "umzug_ausland", label: "Dauerhafter Umzug ins Ausland" },
+  { value: "gewerbe_aufgabe", label: "Gewerbeaufgabe / Betriebsschließung" },
+  { value: "sonstiges", label: "Sonstiger Risikowegfall" },
 ];
 
 const today = new Date().toLocaleDateString("de-DE");
@@ -20,6 +32,8 @@ const INIT = {
   versicherungsnummer: "",
   erhoehungsDatum: "",
   schadenDatum: "",
+  risikowegfallGrund: "",
+  risikowegfallDatum: "",
 };
 
 function Field({ label, value, onChange, placeholder, type = "text" }) {
@@ -75,11 +89,25 @@ function LetterPreview({ tab, form }) {
         </>
       );
     }
+    if (tab === "schadensfall") {
+      return (
+        <>
+          Hiermit kündige ich meine oben genannte Versicherung gemäß{" "}
+          <strong>§ 92 VVG fristlos</strong> nach Regulierung des Schadens
+          {form.schadenDatum ? ` vom ${form.schadenDatum}` : ""}.
+        </>
+      );
+    }
+    // risikowegfall
+    const grundLabel = RISIKOWEGFALL_GRUENDE.find((g) => g.value === form.risikowegfallGrund)?.label || "";
+    const grundText = form.risikowegfallGrund && form.risikowegfallGrund !== ""
+      ? ` Grund: ${grundLabel}${form.risikowegfallDatum ? ` (${form.risikowegfallDatum})` : ""}.`
+      : "";
     return (
       <>
         Hiermit kündige ich meine oben genannte Versicherung gemäß{" "}
-        <strong>§ 92 VVG fristlos</strong> nach Regulierung des Schadens
-        {form.schadenDatum ? ` vom ${form.schadenDatum}` : ""}.
+        <strong>§ 80 VVG</strong> aufgrund des <strong>vollständigen Wegfalls des versicherten Risikos</strong>
+        {form.risikowegfallDatum ? ` zum ${form.risikowegfallDatum}` : ""} mit sofortiger Wirkung.{grundText}
       </>
     );
   };
@@ -305,6 +333,38 @@ export default function Kuendigungsformulare() {
             <div style={s.divider} />
             <div style={s.sectionTitle}>Schadensfall</div>
             <Field label="Datum des Schadens" value={form.schadenDatum} onChange={set("schadenDatum")} placeholder="15.03.2026" />
+          </>
+        )}
+        {tab === "risikowegfall" && (
+          <>
+            <div style={s.divider} />
+            <div style={s.sectionTitle}>Risikowegfall</div>
+            <div style={{ marginBottom: 10 }}>
+              <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#555", marginBottom: 3, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                Grund des Wegfalls
+              </label>
+              <select
+                value={form.risikowegfallGrund}
+                onChange={set("risikowegfallGrund")}
+                style={{
+                  width: "100%",
+                  padding: "7px 10px",
+                  border: "1px solid #d0d0d0",
+                  borderRadius: 6,
+                  fontSize: 13,
+                  fontFamily: "inherit",
+                  boxSizing: "border-box",
+                  background: "#fff",
+                  outline: "none",
+                  cursor: "pointer",
+                }}
+              >
+                {RISIKOWEGFALL_GRUENDE.map((g) => (
+                  <option key={g.value} value={g.value}>{g.label}</option>
+                ))}
+              </select>
+            </div>
+            <Field label="Datum des Wegfalls" value={form.risikowegfallDatum} onChange={set("risikowegfallDatum")} placeholder="01.04.2026" />
           </>
         )}
 
