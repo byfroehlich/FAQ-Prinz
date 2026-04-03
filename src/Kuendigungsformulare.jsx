@@ -1,5 +1,34 @@
 import { useState } from "react";
 
+const VERSICHERER = [
+  "Allianz",
+  "Alte Leipziger",
+  "ARAG",
+  "Auxilia",
+  "AXA",
+  "Barmenia",
+  "Canada Life",
+  "Continentale",
+  "Cosmos Direkt",
+  "DA Direkt",
+  "Debeka",
+  "DEVK",
+  "Dialog",
+  "ERGO",
+  "Generali",
+  "Gothaer",
+  "Hanse Merkur",
+  "HDI",
+  "HUK-Coburg",
+  "LVM",
+  "Provinzial",
+  "R+V",
+  "Signal Iduna",
+  "Sparkassen Versicherung",
+  "Stuttgarter",
+  "Zurich",
+];
+
 const TABS = [
   { id: "ordentlich", label: "Ordentliche Kündigung" },
   { id: "beitragserhöhung", label: "Sonderkündigung Beitragserhöhung" },
@@ -62,6 +91,48 @@ function Field({ label, value, onChange, placeholder, type = "text" }) {
         onFocus={(e) => (e.target.style.border = "1px solid #3b82f6")}
         onBlur={(e) => (e.target.style.border = "1px solid #d0d0d0")}
       />
+    </div>
+  );
+}
+
+function VersichererField({ value, onChange }) {
+  const [frei, setFrei] = useState(false);
+  const inputStyle = {
+    width: "100%", padding: "7px 10px", border: "1px solid #d0d0d0",
+    borderRadius: 6, fontSize: 13, fontFamily: "inherit",
+    boxSizing: "border-box", background: "#fff", outline: "none",
+  };
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <label style={{ display: "block", fontSize: 11, fontWeight: 600, color: "#555", marginBottom: 3, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+        Name des Versicherers
+      </label>
+      {frei ? (
+        <div style={{ display: "flex", gap: 6 }}>
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="Versicherer eingeben..."
+            style={inputStyle}
+            autoFocus
+          />
+          <button onClick={() => { setFrei(false); onChange(""); }}
+            style={{ padding: "0 8px", border: "1px solid #d0d0d0", borderRadius: 6, background: "#334155", color: "#94a3b8", cursor: "pointer", fontSize: 11, whiteSpace: "nowrap" }}>
+            ← Liste
+          </button>
+        </div>
+      ) : (
+        <select
+          value={value}
+          onChange={(e) => { if (e.target.value === "__frei__") { setFrei(true); onChange(""); } else { onChange(e.target.value); } }}
+          style={{ ...inputStyle, cursor: "pointer" }}
+        >
+          <option value="">– Versicherer wählen –</option>
+          {VERSICHERER.map((v) => <option key={v} value={v}>{v}</option>)}
+          <option value="__frei__">✏️ Andere / frei eingeben...</option>
+        </select>
+      )}
     </div>
   );
 }
@@ -309,7 +380,7 @@ export default function Kuendigungsformulare() {
 
         {/* Versicherer */}
         <div style={s.sectionTitle}>Versicherer / Empfänger</div>
-        <Field label="Name des Versicherers" value={form.versichererName} onChange={set("versichererName")} placeholder="Allianz Versicherung AG" />
+        <VersichererField value={form.versichererName} onChange={(v) => setForm((f) => ({ ...f, versichererName: v }))} />
         <Field label="Straße & Nr." value={form.versichererStrasse} onChange={set("versichererStrasse")} placeholder="Königinstraße 28" />
         <Field label="PLZ & Ort" value={form.versichererOrt} onChange={set("versichererOrt")} placeholder="80802 München" />
 
