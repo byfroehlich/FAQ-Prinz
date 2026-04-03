@@ -1,32 +1,38 @@
 import { useState } from "react";
 
 const VERSICHERER = [
-  "Allianz",
-  "Alte Leipziger",
-  "ARAG",
-  "Auxilia",
-  "AXA",
-  "Barmenia",
-  "Canada Life",
-  "Continentale",
-  "Cosmos Direkt",
-  "DA Direkt",
-  "Debeka",
-  "DEVK",
-  "Dialog",
-  "ERGO",
-  "Generali",
-  "Gothaer",
-  "Hanse Merkur",
-  "HDI",
-  "HUK-Coburg",
-  "LVM",
-  "Provinzial",
-  "R+V",
-  "Signal Iduna",
-  "Sparkassen Versicherung",
-  "Stuttgarter",
-  "Zurich",
+  { name: "Allianz",                          strasse: "Königinstraße 28",          ort: "80802 München" },
+  { name: "Alte Leipziger",                   strasse: "Postfach 1660",             ort: "61406 Oberursel" },
+  { name: "ARAG",                             strasse: "ARAG-Platz 1",              ort: "40472 Düsseldorf" },
+  { name: "Auxilia",                          strasse: "Postfach 151220",           ort: "80042 München" },
+  { name: "AXA",                              strasse: "Colonia-Allee 10-20",       ort: "51067 Köln" },
+  { name: "Barmenia",                         strasse: "Barmenia-Allee 1",          ort: "42119 Wuppertal" },
+  { name: "Canada Life",                      strasse: "Postfach 1763",             ort: "63237 Neu-Isenburg" },
+  { name: "Continentale",                     strasse: "Continentale-Allee 1",      ort: "44269 Dortmund" },
+  { name: "Cosmos Direkt",                    strasse: "Halbergstraße 50-60",       ort: "66121 Saarbrücken" },
+  { name: "DA Direkt",                        strasse: "Platz der Einheit 2",       ort: "60327 Frankfurt am Main" },
+  { name: "Debeka",                           strasse: "Jakob-Hasslacher-Straße 1", ort: "56070 Koblenz" },
+  { name: "DEVK",                             strasse: "Unter Sachsenhausen 10-26", ort: "50667 Köln" },
+  { name: "Dialog Versicherung",              strasse: "Adenauerring 7",            ort: "81737 München" },
+  { name: "DKV",                              strasse: "Aachener Straße 300",       ort: "50933 Köln" },
+  { name: "ERGO",                             strasse: "ERGO-Platz 1",              ort: "40477 Düsseldorf" },
+  { name: "Generali",                         strasse: "Adenauerring 7",            ort: "81737 München" },
+  { name: "Gothaer",                          strasse: "Arnoldiplatz 1",            ort: "50969 Köln" },
+  { name: "Hanse Merkur",                     strasse: "Siegfried-Wedells-Platz 1", ort: "20354 Hamburg" },
+  { name: "HDI Versicherung",                 strasse: "HDI-Platz 1",               ort: "30659 Hannover" },
+  { name: "HUK-Coburg",                       strasse: "HUK-COBURG-Platz 1",       ort: "96444 Coburg" },
+  { name: "LVM",                              strasse: "Kolde-Ring 21",             ort: "48151 Münster" },
+  { name: "Mannheimer Versicherung",          strasse: "Augustaanlage 66",          ort: "68165 Mannheim" },
+  { name: "Örag Rechtsschutz",               strasse: "Hansaallee 199",            ort: "40549 Düsseldorf" },
+  { name: "Provinzial Versicherung",          strasse: "Provinzial-Allee 1",        ort: "48159 Münster" },
+  { name: "R+V Versicherung",                 strasse: "Raiffeisenplatz 1",         ort: "65189 Wiesbaden" },
+  { name: "Signal Iduna",                     strasse: "Kapstadtring 8",            ort: "22297 Hamburg" },
+  { name: "Sparkassen Versicherung",          strasse: "Löwentorstraße 65",         ort: "70376 Stuttgart" },
+  { name: "Stuttgarter Versicherung",         strasse: "Rotebühlstraße 120",        ort: "70197 Stuttgart" },
+  { name: "Versicherungskammer Bayern",       strasse: "Maximilianstraße 53",       ort: "80530 München" },
+  { name: "VHV Versicherung",                 strasse: "VHV-Platz 1",              ort: "30177 Hannover" },
+  { name: "Württembergische Versicherung",    strasse: "W&W-Platz 1",              ort: "70806 Kornwestheim" },
+  { name: "Zurich",                           strasse: "Platz der Einheit 2",       ort: "60327 Frankfurt am Main" },
 ];
 
 const TABS = [
@@ -95,7 +101,7 @@ function Field({ label, value, onChange, placeholder, type = "text" }) {
   );
 }
 
-function VersichererField({ value, onChange }) {
+function VersichererField({ value, onSelect }) {
   const [frei, setFrei] = useState(false);
   const inputStyle = {
     width: "100%", padding: "7px 10px", border: "1px solid #d0d0d0",
@@ -112,12 +118,12 @@ function VersichererField({ value, onChange }) {
           <input
             type="text"
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => onSelect({ name: e.target.value, strasse: "", ort: "" }, true)}
             placeholder="Versicherer eingeben..."
             style={inputStyle}
             autoFocus
           />
-          <button onClick={() => { setFrei(false); onChange(""); }}
+          <button onClick={() => { setFrei(false); onSelect({ name: "", strasse: "", ort: "" }, true); }}
             style={{ padding: "0 8px", border: "1px solid #d0d0d0", borderRadius: 6, background: "#334155", color: "#94a3b8", cursor: "pointer", fontSize: 11, whiteSpace: "nowrap" }}>
             ← Liste
           </button>
@@ -125,11 +131,17 @@ function VersichererField({ value, onChange }) {
       ) : (
         <select
           value={value}
-          onChange={(e) => { if (e.target.value === "__frei__") { setFrei(true); onChange(""); } else { onChange(e.target.value); } }}
+          onChange={(e) => {
+            if (e.target.value === "__frei__") { setFrei(true); onSelect({ name: "", strasse: "", ort: "" }, false); }
+            else {
+              const v = VERSICHERER.find((x) => x.name === e.target.value);
+              onSelect(v || { name: e.target.value, strasse: "", ort: "" }, false);
+            }
+          }}
           style={{ ...inputStyle, cursor: "pointer" }}
         >
           <option value="">– Versicherer wählen –</option>
-          {VERSICHERER.map((v) => <option key={v} value={v}>{v}</option>)}
+          {VERSICHERER.map((v) => <option key={v.name} value={v.name}>{v.name}</option>)}
           <option value="__frei__">✏️ Andere / frei eingeben...</option>
         </select>
       )}
@@ -380,7 +392,15 @@ export default function Kuendigungsformulare() {
 
         {/* Versicherer */}
         <div style={s.sectionTitle}>Versicherer / Empfänger</div>
-        <VersichererField value={form.versichererName} onChange={(v) => setForm((f) => ({ ...f, versichererName: v }))} />
+        <VersichererField
+          value={form.versichererName}
+          onSelect={(v, keepStrasse) => setForm((f) => ({
+            ...f,
+            versichererName: v.name,
+            versichererStrasse: keepStrasse ? f.versichererStrasse : (v.strasse || ""),
+            versichererOrt: keepStrasse ? f.versichererOrt : (v.ort || ""),
+          }))}
+        />
         <Field label="Straße & Nr." value={form.versichererStrasse} onChange={set("versichererStrasse")} placeholder="Königinstraße 28" />
         <Field label="PLZ & Ort" value={form.versichererOrt} onChange={set("versichererOrt")} placeholder="80802 München" />
 
